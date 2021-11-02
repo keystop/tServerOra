@@ -18,7 +18,7 @@ type Server struct {
 
 //Start server with router.
 func (s *Server) Start(ctx context.Context, repo models.Repository, opt models.Options) {
-	fs := http.FileServer(http.Dir("../../html"))
+	fs := http.FileServer(http.Dir("./html"))
 	r := chi.NewRouter()
 	handlers.NewHandlers(repo)
 	middlewares.NewCookie(repo)
