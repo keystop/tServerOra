@@ -23,8 +23,8 @@ func (s *ServerRepo) SaveCard(ctx context.Context, cTC *models.CardTC) error {
 	db := s.db
 	tx := db.MustBegin()
 	defer tx.Rollback()
-	tx.MustExec("INSERT INTO viewblank (datestart, fio, numtc, markatc) VALUES (:datestart, :fio, :numtc, :markatc)",
-		"to_date('2003/05/03 21:02:44', 'yyyy/mm/dd hh24:mi:ss')", cTC.DriverName, cTC.NumTC, cTC.ModelTC)
+	tx.MustExec("INSERT INTO viewblank (datestart, fio, numtc, markatc) VALUES (sysdate, :fio, :numtc, :markatc)",
+		cTC.DriverName, cTC.NumTC, cTC.ModelTC)
 	tx.Commit()
 
 	return nil
