@@ -18,13 +18,14 @@ type Server struct {
 
 //Start server with router.
 func (s *Server) Start(ctx context.Context, repo models.Repository, opt models.Options) {
+	fs := http.FileServer(http.Dir("../../html"))
 	r := chi.NewRouter()
 	handlers.NewHandlers(repo)
 	middlewares.NewCookie(repo)
 
 	r.Use(middlewares.SetCookieUser, middlewares.ZipHandlerRead, middlewares.ZipHandlerWrite)
 	//r.Use(middlewares.ZipHandlerRead, middlewares.ZipHandlerWrite)
-	r.Get("/", handlers.HandlerHi)
+	r.Get("/*", fs.ServeHTTP)
 	r.Get("/ping*", handlers.HandlerCheckDBConnect)
 	r.Post("/api/savetc*", handlers.HandlerTCPost)
 	// r.Delete("/api/user/urls", handlers.HandlerDeleteUserUrls)

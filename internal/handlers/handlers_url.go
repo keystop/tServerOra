@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"html/template"
 	"io"
 	"net/http"
 
@@ -9,6 +10,7 @@ import (
 )
 
 var Repo models.Repository
+var tpl *template.Template
 
 func HandlerTCPost(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -51,11 +53,17 @@ func HandlerCheckDBConnect(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, "Connection: OK")
 }
 
-func HandlerHi(w http.ResponseWriter, r *http.Request) {
+func HandlerIndex(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
-	io.WriteString(w, "Hi my friend")
+	//tpl.Execute(w, nil)
 }
 
 func NewHandlers(repo models.Repository) {
+	//t, err := template.ParseFiles("../../html/index.html")
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	//tpl = template.Must(t, err)
+	fmt.Println(tpl)
 	Repo = repo
 }
