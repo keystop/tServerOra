@@ -61,7 +61,7 @@ func (d *defOptions) setFlags() {
 	}
 	flag.StringVar(&d.servAddr, "a", "localhost:8080", "a server address string")
 	flag.StringVar(&d.repoFileName, "f", appDir+`/local.gob`, "a file storage path string")
-	flag.StringVar(&d.dbConnString, "d", "user=kseikseich password=11 dbname=yap sslmode=disable", "a db connection string")
+	flag.StringVar(&d.dbConnString, "d", "dvt/dvt@sup-srv.ctm.ru:1521/orcl.ctm.ru", "a db connection string")
 	flag.Parse()
 }
 

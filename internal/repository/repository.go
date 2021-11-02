@@ -2,18 +2,14 @@ package repository
 
 import (
 	"context"
-	"database/sql"
 	"tServerOra/internal/models"
-	"time"
 
-	encription "tServerOra/internal/Encription"
-
-	"github.com/google/uuid"
+	"github.com/jmoiron/sqlx"
 )
 
 type ServerRepo struct {
 	connStr string
-	db      *sql.DB
+	db      *sqlx.DB
 	cancel  context.CancelFunc
 }
 
@@ -24,12 +20,17 @@ type UsersRepo struct {
 
 // func (s *ServerRepo) SaveCard
 func (s *ServerRepo) SaveCard(ctx context.Context, cTC *models.CardTC) error {
+	db := s.db
+	tx := db.MustBegin()
+	defer tx.Rollback()
+	tx.MustExec("INSERT INTO TODOS (description, done) VALUES (:description, :done)", cTC.DriverName, 1)
+	tx.Commit()
 
 	return nil
 }
 
 func (s *ServerRepo) CreateUser(ctx context.Context) (string, error) {
-	db := s.db
+	/*db := s.db
 	ctx, cancelfunc := context.WithTimeout(ctx, 5*time.Second)
 	defer cancelfunc()
 
@@ -45,4 +46,6 @@ func (s *ServerRepo) CreateUser(ctx context.Context) (string, error) {
 	}
 
 	return urEnc, nil
+	*/
+	return "12345", nil
 }

@@ -2,9 +2,9 @@ package repository
 
 import (
 	"context"
-	"database/sql"
-	"time"
 
+	_ "github.com/godror/godror"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -26,16 +26,17 @@ func (s *ServerRepo) CheckDBConnection(ctx context.Context) error {
 }
 
 // Создание таблиц
+/*
 func (s *ServerRepo) createTables(ctx context.Context) error {
 	db := s.db
 	ctx, cancelFunc := context.WithTimeout(ctx, 10*time.Second)
 	defer cancelFunc()
 
-	q := `CREATE TABLE IF NOT EXISTS users (
+	q := `CREATE TABLE  users (
 		id SERIAL PRIMARY KEY,
 		user_uuid VARCHAR(36),
 		user_enc_id VARCHAR(36),
-		date_add timestamp
+		date_add date
 	)`
 	if _, err := db.ExecContext(ctx, q); err != nil {
 		return err
@@ -43,10 +44,12 @@ func (s *ServerRepo) createTables(ctx context.Context) error {
 
 	return nil
 }
+*/
 
 // Создание соединения
 func NewServerRepo(ctx context.Context, c string) (*ServerRepo, error) {
-	db, err := sql.Open("postgres", c)
+	//db, err := sql.Open("postgres", c)
+	db, err := sqlx.Connect("godror", c)
 	if err != nil {
 		return nil, err
 	}
@@ -62,8 +65,8 @@ func NewServerRepo(ctx context.Context, c string) (*ServerRepo, error) {
 		return nil, err
 	}
 
-	if err := sr.createTables(ctx); err != nil {
-		return nil, err
-	}
+	//if err := sr.createTables(ctx); err != nil {
+	//	return nil, err
+	//}
 	return sr, nil
 }
